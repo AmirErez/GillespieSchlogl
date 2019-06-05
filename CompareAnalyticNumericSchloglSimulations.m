@@ -17,7 +17,8 @@ for tt=1:length(thetas)
         Ising.theta = thetas(tt);
         disp(['Theta=' num2str(Ising.theta) ' ; h=' num2str(Ising.h)]);
 
-        Schlogl = SchloglFromIsing(Ising);        
+%         Schlogl = SchloglFromIsing(Ising);    
+        Schlogl = SchloglFromIsingOldMapping(Ising);  
         analytic_Pn{tt,hh} = AnalyticSchlogl1cell(Schlogl);
         
         [Pn,t,x] = SimulateSchlogl1cell_mex([10000,60000], nc, Schlogl, 0, 10000000);

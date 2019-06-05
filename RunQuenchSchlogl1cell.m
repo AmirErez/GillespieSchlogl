@@ -1,7 +1,7 @@
 function [t, mean_n] = RunQuenchSchlogl1cell(Ising_i, Ising_f, n_replicates, tspan, dt)
 % Run several replicates of a quench from initial to final       
-Schlogl_i = SchloglFromIsing(Ising_i);
-Schlogl_f = SchloglFromIsing(Ising_f);
+Schlogl_i = SchloglFromIsingOldMapping(Ising_i);
+Schlogl_f = SchloglFromIsingOldMapping(Ising_f);
 
 
 mean_n = NaN;
