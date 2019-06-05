@@ -19,9 +19,4 @@ Ising_f.theta = theta_f;
 disp(['th_i=' num2str(Ising_i.theta) ' ; h_i=' num2str(Ising_i.h) ...
     ' ; th_f=' num2str(Ising_f.theta) ' ; h_f=' num2str(Ising_f.h)]);
 
-[t, mean_n] = RunQuenchSchlogl1cell(Ising_i, Ising_f, n_replicates, tspan, dt);
-dn = mean_n - mean_n(end);
-tau_integral = sum(abs(dn)*dt)/abs(dn(1));
-
-disp(['Saving to ' outfile]);
-save(outfile);
+RunQuenchSchlogl1cell(Ising_i, Ising_f, n_replicates, tspan, dt, outfile);
