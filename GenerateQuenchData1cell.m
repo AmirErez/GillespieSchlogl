@@ -1,10 +1,13 @@
 function GenerateQuenchData1cell(theta_i, theta_f, h_i, h_f, outfile)
 % Runs quenches on the 1-cell Schlogl model
 
-nc = 1000;
-n_replicates = 500;
-tspan = [1000,1200];
-dt = 0.05;
+rng('shuffle'); % Essential !!! Shuffle random number generator
+%nc = 3600;
+nc = 10000;
+n_replicates = 20000;
+tspan = [500,1500];
+dt = 0.01;
+%dt = 0.001;
 
 Ising_i = struct;
 Ising_i.nc = nc;

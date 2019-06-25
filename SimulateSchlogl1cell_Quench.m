@@ -70,7 +70,7 @@ while curT < tspan(2)
         k_n1minus_f*prevX(1) + k_n2minus_f*prevX(1)*(prevX(1)-1)*(prevX(1)-2)
         ];
 
-    if(curT< tspan(1))
+    if(curT<= tspan(1))
         a = a_i;
     else
         a = a_f;
@@ -102,18 +102,27 @@ while curT < tspan(2)
     % Update time and carry out reaction mu
     newX = prevX + stoich_matrix(mu); 
     curT = curT + tau;
-    if((curT-tspan(1)) > curr_timepoint*dt)
-%         fprintf('t = %.2f ; reaction %.0f\n',curT-tspan(1), rxn_count);
-        t(curr_timepoint) = curT-tspan(1);
-        x(curr_timepoint) = newX;
+    actual_t = curT-tspan(1);
+    if(actual_t > curr_timepoint*dt)
+        t(curr_timepoint) = actual_t;
+        x(curr_timepoint) = prevX;
         curr_timepoint = curr_timepoint + 1;
+
+%         fprintf('t = %.2f ; reaction %.0f\n',curT-tspan(1), rxn_count);
+        if actual_t > curr_timepoint*dt*2
+           fprintf('Warning! Skipped two timepoints, increase dt\n');
+        end          
+%        t(curr_timepoint) = curr_timepoint*dt;
+%        x(curr_timepoint) = interp1([curT-tau, curT],[prevX,newX],curr_timepoint*dt);
     end
 
     rxn_count = rxn_count + 1;
     prevX = newX(1);    
 end  
 
-t = t(1:(end-1));
-x = x(1:(end-1));
+t = t(1:(curr_timepoint-1));
+x = x(1:(curr_timepoint-1));
+%t = t(1:(end-1));
+%x = x(1:(end-1));
 end
 
