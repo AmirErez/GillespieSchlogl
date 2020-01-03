@@ -23,5 +23,5 @@
 qseq=$(sed -n "$SLURM_ARRAY_TASK_ID"p all_ncs3.txt)
 
 echo SLURM_ARRAY_JOB_ID: $SLURM_ARRAY_JOB_ID SLURM_ARRAY_TASK_ID: $SLURM_ARRAY_TASK_ID sample: $qseq
-
-matlab -r "ScalingTwocellSchloglCommandline(0,1,$qseq) ; quit();"
+# ScalingTwocellSchloglCommandline_diff_params(theta_x, theta_y, g_x, g_y, h_x, h_y, log10nc_x, log10nc_y)
+matlab -r "ScalingTwocellSchloglCommandline_diff_params(0,0,1,1,) ; quit();"

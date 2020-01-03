@@ -50,10 +50,19 @@ batchTime = 1000;
 nBatches = floor(tspan(2)/batchTime);
 
 batchMeans = zeros(nBatches,2);
-batchVals = NaN(5E8,2);
 totalVariance = zeros(1,2);
+running_batch_sum = zeros(1,2);
+running_batch_sq_sum = zeros(1,2);
+% batchVals = NaN(5E8,2);
 
 % DISPLAY_EVERY = 100000;
+
+fprintf('Running with params\n');
+fprintf('n: = a=%.2f, g=%.2f, K=%.2f, K2=%.2f, N=%f, s=%.2f\n',Schlogl_n.a, Schlogl_n.g, Schlogl_n.K, Schlogl_n.K2, Schlogl_n.N, Schlogl_n.s);
+fprintf('m: = a=%.2f, g=%.2f, K=%.2f, K2=%.2f, N=%f, s=%.2f\n',Schlogl_m.a, Schlogl_m.g, Schlogl_m.K, Schlogl_m.K2, Schlogl_m.N, Schlogl_m.s);
+fprintf('-------------------------------------------------------------------\n');
+
+
 
 k_n1minus = 1;
 k_m1minus = k_n1minus;
@@ -84,28 +93,35 @@ stoich_matrix = [
 
 %% MAIN LOOP
 batchCounter = 0;
-counterInBatch = 1;
+counterInBatch = 0;
 is_burnin = true;
 while curT < tspan(2)        
 
     if(curT > batchCounter*batchTime)
-        if(batchCounter>0) % Statistics for previous batch
-            batchMeans(batchCounter,:) = nanmean(batchVals(1:counterInBatch,1));
-            totalVariance = (totalVariance*batchCounter + nanmean(batchVals(1:counterInBatch,1).^2) - batchMeans(batchCounter,:).^2)/(batchCounter+1);
+        if(batchCounter>0 & counterInBatch>0) % Statistics for previous batch
+%            batchMeans(batchCounter,:) = nanmean(batchVals(1:counterInBatch,1));
+%            totalVariance = (totalVariance*batchCounter + nanmean(batchVals(1:counterInBatch,1).^2) - batchMeans(batchCounter,:).^2)/(batchCounter+1);
+             batchMeans(batchCounter,:) = running_batch_sum/counterInBatch;
+             batch_variance = running_batch_sq_sum/counterInBatch - batchMeans(batchCounter,:).^2 ;
+             totalVariance = (totalVariance*batchCounter + batch_variance)/(batchCounter+1);
+             
         end        
         batchCounter = batchCounter+1;
-        counterInBatch = 1;
-%         batchVals = NaN(1E7,2);
+        counterInBatch = 0;
+        running_batch_sum = zeros(1,2);
+        running_batch_sq_sum = zeros(1,2);
     end
     
-    
-    
+
+    if(is_burnin==true && curT>=tspan(1))
+          is_burnin = false;
+          fprintf('Finished burnin\n');
+          curT = 0;
+          rxn_count = 1;
+    end    
     if(mod(rxn_count,DISPLAY_EVERY)==0)
          if(is_burnin==true)
-            is_burnin = false;
-            fprintf('Finished burnin\n');
-            curT = 0;
-            rxn_count = 1;
+            fprintf('Burnin t = %.2f\n',curT);
          else 
             fprintf('t = %.2f\n',curT);
          end
@@ -156,7 +172,9 @@ while curT < tspan(2)
         X(rxn_count+1,:) = newX;
     end
 
-    batchVals(counterInBatch,:) = newX;
+%    batchVals(counterInBatch,:) = newX;
+    running_batch_sum = running_batch_sum + newX;
+    running_batch_sq_sum = running_batch_sq_sum + newX.^2;
     counterInBatch = counterInBatch+1;
     
     Pn(prevX(1)+1) = Pn(prevX(1)+1)+tau;
@@ -180,8 +198,9 @@ Pw = Pw / sum(Pw);
 nSteps = rxn_count;
 
 % Batch means:
-batchMeans(batchCounter,:) = nanmean(batchVals,1);
-totalVariance = (totalVariance*batchCounter + nanmean(batchVals.^2,1) - batchMeans(batchCounter,:).^2)/(batchCounter+1);
+% batchMeans(batchCounter,:) = nanmean(batchVals,1);
+% totalVariance = (totalVariance*batchCounter + nanmean(batchVals.^2,1) - batchMeans(batchCounter,:).^2)/(batchCounter+1);
+batchMeans = batchMeans(1:(batchCounter-1),:)
 varBatches = mean(batchMeans.^2,1) - mean(batchMeans,1).^2;
 tau_n = batchTime * varBatches(1)/2/totalVariance(1);
 tau_m = batchTime * varBatches(2)/2/totalVariance(2);

@@ -6,8 +6,10 @@ all_h_i = [];
 
 range=0.1;
 
-theta_is = [-range,0,range];
-h_is = [-range,0,range];
+%theta_is = [-range,0,range];
+%h_is = [-range,0,range];
+theta_is = [-0.1,0.1];
+h_is = [-0.1,0.1];
 
 fullrange = [-range:0.01:range]';
 

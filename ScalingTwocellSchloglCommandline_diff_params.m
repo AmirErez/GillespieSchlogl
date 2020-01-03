@@ -1,4 +1,4 @@
-function ScalingTwocellSchloglCommandline_diff_params(theta_x, theta_y, g_x, g_y, h_x, h_y, log10nc_x, log10nc_y)
+function ScalingTwocellSchloglCommandline_diff_params(savedir, theta_x, theta_y, g_x, g_y, h_x, h_y, log10nc_x, log10nc_y)
 % Simulates linear birth-death model to test simulation
 
 rng('shuffle'); % Essential !!! Shuffle random number generator
@@ -10,10 +10,6 @@ getTranjectories = false; % True just get trajectories, false gets distributions
 nc_x = round(10^log10nc_x);
 nc_y = round(10^log10nc_y);
 
-% distr = cell(length(thetas),length(ncs));
-
-% savefile = 'allstats';
-savedir = 'temp2';
 mkdir(savedir);
 
 
@@ -23,14 +19,16 @@ Ising_x.nc = nc_x;
 Ising_x.theta = theta_x;
 Ising_x.h = h_x;
 Ising_x.g = g_x;
-Ising_x.tspan = [0, 2E5];  % Actual time
+% Ising_x.tspan = [0, 2E5];  % Actual time
+Ising_x.tspan = [0, 0];  % IGNORE Actual time
 
 Ising_y.nc = nc_y;
 Ising_y.theta = theta_y;
 Ising_y.h = h_y;
 Ising_y.g = g_y;
 
-tspan = [0, 2E5];  % Actual time
+% tspan = [0, 2E5];  % Actual time
+tspan = [1E5, 1E6];  % Actual time
 n0 = [Ising_x.nc, Ising_y.nc];    % Initial copy number
 
 if(~getTranjectories)
@@ -54,7 +52,7 @@ GillespieOut.Schlogl_y = Schlogl_y;
 
 if(~getTranjectories)
     [nSteps,Pn,Pm,Pnm,~,~,tau_n, tau_m, batchMeans] = ...
-        SimulateSchlogl2cell_mex(tspan, n0, Schlogl_x, Schlogl_y, 5E8, 5E5);
+        SimulateSchlogl2cell_mex(tspan, n0, Schlogl_x, Schlogl_y, 5E8, 1E7);
     GillespieOut.Pn = Pn;
     GillespieOut.Pm = Pm;
     GillespieOut.Pnm = sparse(Pnm);
@@ -76,5 +74,4 @@ GillespieOut.batchMeans = batchMeans;
 save(savefile,'GillespieOut');
 clear('GillespieOut');
 
-
-
+disp('Finished successfully');
