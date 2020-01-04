@@ -53,7 +53,7 @@ GillespieOut.Hill_y = Hill_y;
 
 if(~getTranjectories)
     [nSteps,Pn,Pm,Pnm,~,~,tau_n, tau_m, batchMeans] = ...
-        SimulateHill2cell(tspan, n0, Hill_x, Hill_y, 5E8, 1E7);
+        SimulateHill2cell_mex(tspan, n0, Hill_x, Hill_y, 5E8, 1E7);
     GillespieOut.Pn = Pn;
     GillespieOut.Pm = Pm;
     GillespieOut.Pnm = sparse(Pnm);
