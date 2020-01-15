@@ -19,11 +19,7 @@ function [nSteps,Pn,Pm,Pnm,Pz,Pw,tau_n, tau_m, batchMeans] = SimulateSchlogl2cel
 %       Gillespie, D.T. (1977) Exact Stochastic Simulation of Coupled
 %       Chemical Reactions. J Phys Chem, 81:25, 2340-2361.
 %
-%   Adapted by Amir Erez 2017 (amir.b.erez@gmail.com)
-%      From code by Nezar Abdennur, 2012 <nabdennur@gmail.com>
-%                   Dynamical Systems Biology Laboratory, University of Ottawa
-%                   www.sysbiolab.uottawa.ca
-%                   Created: 2012-01-19
+%   Adapted by Amir Erez 2017-2020 (amir.b.erez@gmail.com)
 
 %% Initialize
 %num_rxns = size(stoich_matrix, 1);
