@@ -58,24 +58,14 @@ running_batch_sq_sum = zeros(1,2);
 % DISPLAY_EVERY = 100000;
 
 fprintf('Running with params\n');
-fprintf('n: = a=%.2f, g=%.2f, K=%.2f, N=%f, s=%.2f\n',Hill_n.a, Hill_n.g, Hill_n.K, Hill_n.N, Hill_n.s);
-fprintf('m: = a=%.2f, g=%.2f, K=%.2f, N=%f, s=%.2f\n',Hill_m.a, Hill_m.g, Hill_m.K, Hill_m.N, Hill_m.s);
+fprintf('n: = a=%.2f, gamma_nm=%.2f, K=%.2f, N=%f, s=%.2f\n',Hill_n.a, Hill_n.gamma, Hill_n.K, Hill_n.N, Hill_n.s);
+fprintf('m: = a=%.2f, gamma_mn=%.2f, K=%.2f, N=%f, s=%.2f\n',Hill_m.a, Hill_m.gamma, Hill_m.K, Hill_m.N, Hill_m.s);
 fprintf('-------------------------------------------------------------------\n');
 
 
 
-gamma_mn = Hill_m.g;
-gamma_nm = Hill_n.g;
-
-%k_n1minus = 1;
-%k_m1minus = k_n1minus;
-%k_n1plus = Hill_n.a*k_n1minus;
-%k_m1plus = Hill_m.a*k_m1minus;
-%k_n2plus = k_n2minus*Schlogl_n.s;
-%k_m2plus = k_m2minus*Schlogl_m.s;
-%gamma_mn = Hill_m.g/k_m1minus/3*((Schlogl_m.s+3)/Schlogl_m.K)^2;
-%gamma_nm = Hill_n.g/k_n1minus/3*((Schlogl_n.s+3)/Schlogl_n.K)^2;
-
+gamma_mn = Hill_n.gamma;
+gamma_nm = Hill_m.gamma;
 
 Pn = zeros(x0(1)*10,1);
 Pm = zeros(x0(1)*10,1);

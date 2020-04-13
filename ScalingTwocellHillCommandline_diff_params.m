@@ -29,16 +29,20 @@ Ising_y.g = g_y;
 
 % tspan = [0, 2E5];  % Actual time
 % tspan = [1E5, 1E6];  % Actual time
-tspan = [1E5, 2E5];  % Actual time
+tspan = [1E5, 5E5];  % Actual time
 n0 = [Ising_x.nc, Ising_y.nc];    % Initial copy number
 
 if(~getTranjectories)
-    savefile = [savedir filesep '/out_nc_' num2str(nc_x) '_theta_' num2str(Ising_x.theta) '_g_' num2str(Ising_x.g) ...
-        '_hx_' num2str(h_x) '_hy_' num2str(h_y) '.mat'];
+    savefile = [savedir filesep '/out__nc_' num2str(nc_x) '__thetax_' num2str(Ising_x.theta) '__thetay_' num2str(Ising_y.theta) '__g_' num2str(Ising_x.g) ...
+        '__hx_' num2str(h_x) '__hy_' num2str(h_y) '.mat'];
 else
     savefile = [savedir filesep '/Trajectories_out_nc_' num2str(nc_x) '_theta_' num2str(Ising_x.theta) '_g_' num2str(Ising_x.g) '.mat'];
 end
 
+if isfile(savefile)
+    disp(['File already exists. Abortin. ' savefile]);
+    return 
+end
 
 Hill_x = HillFromIsing(Ising_x, H);
 Hill_y = HillFromIsing(Ising_y, H);

@@ -6,5 +6,5 @@ function Hill = HillFromIsing(Ising, H)
    Hill.H = H
    Hill.N = Ising.nc*10;
    if(isfield(Ising, 'g'))
-       Hill.g = Ising.g;
+       Hill.gamma = Ising.g*(H*H-1)/(Ising.theta*(H*H-1)+4);
    end
