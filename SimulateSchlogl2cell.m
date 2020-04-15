@@ -61,15 +61,15 @@ fprintf('-------------------------------------------------------------------\n')
 
 
 k_n1minus = 1;
-k_m1minus = k_n1minus;
+k_m1minus = 1;
 k_n1plus = Schlogl_n.a*k_n1minus;
 k_m1plus = Schlogl_m.a*k_m1minus;
 k_n2minus = k_n1minus/(Schlogl_n.K^2);
 k_m2minus = k_m1minus/(Schlogl_m.K^2);
 k_n2plus = k_n2minus*Schlogl_n.s;
 k_m2plus = k_m2minus*Schlogl_m.s;
-gamma_mn = Schlogl_m.g/k_m1minus/3*((Schlogl_m.s+3)/Schlogl_m.K)^2;
-gamma_nm = Schlogl_n.g/k_n1minus/3*((Schlogl_n.s+3)/Schlogl_n.K)^2;
+gamma_mn = Schlogl_m.g*k_m1minus/3*((Schlogl_m.s+3)/Schlogl_m.K)^2;
+gamma_nm = Schlogl_n.g*k_n1minus/3*((Schlogl_n.s+3)/Schlogl_n.K)^2;
 
 
 Pn = zeros(x0(1)*10,1);
