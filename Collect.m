@@ -1,7 +1,14 @@
 % Collects Gillespie output in folder and makes table with params and corr time
+% all_collect = {'scan_hx_hy_theta0_nc3000-hill'};
+all_collect = {'scan_thetax_thetay_h0_nc3000-hill'};
+% all_collect = {'scan_thetax_thetay_h0_nc3000-schlogl'};
+% all_collect = {'scan_hx_hy_theta0_nc3000'};
+% all_collect = {'symmetric_h_theta_nc3000'};
+% all_collect = {'randparams0_1-nc_3000-schlogl-long'};
+% all_collect = {'randparams0_1-schlogl'};
 
 % all_collect = {'scan_hx_hy_theta_offset-schlogl'};
-all_collect = {'scan_hx_hy_theta_offset-hill'};
+% all_collect = {'scan_hx_hy_theta_offset-hill'};
 
 % all_collect = {'scan_hx_hy-schlogl'};
 %all_collect = {'scan_hx_hy-hill'};
@@ -14,6 +21,8 @@ all_collect = {'scan_hx_hy_theta_offset-hill'};
 
 
 for aa=1:length(all_collect)
+    disp(['Doing ' all_collect{aa} ]);
+
     collectdir = all_collect{aa};
 
     d = dir([collectdir filesep '*.mat']);
@@ -41,8 +50,10 @@ for aa=1:length(all_collect)
            warning(['Failed loading ' fullname ]);
            continue
         end
-%        Px = loaded.Pn/sum(loaded.Pn);
-%        Py = loaded.Pm/sum(loaded.Pm);
+        Pn = loaded.Pn/sum(loaded.Pn);
+        tempstruct.mean_n = sum((0:length(Pn)-1)'.*Pn);
+        Pm = loaded.Pm/sum(loaded.Pm);
+        tempstruct.mean_m = sum((0:length(Pn)-1)'.*Pn);
 %        Pxy = loaded.Pnm/sum(sum(loaded.Pnm));
         v = nonzeros(loaded.Pn);
         v = v / sum(v);
@@ -60,8 +71,14 @@ for aa=1:length(all_collect)
         margy = margy / sum(margy);
 
         tempstruct.I_try = tempstruct.S_x + tempstruct.S_y - tempstruct.S_xy;
-        tempstruct.I = real(-sum(margx.*log(margx))-sum(margy.*log(margy))-tempstruct.S_xy);
+        tempstruct.I = -sum(margx.*log(margx))-sum(margy.*log(margy))-tempstruct.S_xy;
+        if(abs(imag(tempstruct.I))>1E-6)
+           tempstruct.I = 0;
+        else
+           tempstruct.I = real(tempstruct.I);
+        end
         tabInfo = [tabInfo; struct2table(tempstruct)];
     end
+    disp('Finished');
     writetable(tabInfo,[collectdir filesep 'collected.csv']);
 end
