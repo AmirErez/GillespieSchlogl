@@ -62,10 +62,20 @@ fprintf('n: = a=%.2f, gamma_nm=%.2f, K=%.2f, N=%f, s=%.2f\n',Hill_n.a, Hill_n.ga
 fprintf('m: = a=%.2f, gamma_mn=%.2f, K=%.2f, N=%f, s=%.2f\n',Hill_m.a, Hill_m.gamma, Hill_m.K, Hill_m.N, Hill_m.s);
 fprintf('-------------------------------------------------------------------\n');
 
+nc_n = Hill_n.K*( ((Hill_n.H-1)/(Hill_n.H+1))^(1/Hill_n.H) );
+nc_m = Hill_m.K*( ((Hill_m.H-1)/(Hill_m.H+1))^(1/Hill_m.H) );
+temp_mn=16*Hill_n.H*nc_n/(Hill_n.H*Hill_n.H-1)/Hill_n.s;
+temp_nm=16*Hill_m.H*nc_m/(Hill_m.H*Hill_m.H-1)/Hill_m.s;
 
+minus_mn=1;
+minus_nm=minus_mn/temp_mn*temp_nm;
 
-gamma_mn = Hill_n.gamma;
-gamma_nm = Hill_m.gamma;
+gamma_mn = Hill_n.gamma*minus_mn;
+gamma_nm = Hill_m.gamma*minus_nm;
+a_n = Hill_n.a*minus_mn;
+a_m = Hill_m.a*minus_nm;
+s_n = Hill_n.s*minus_mn;
+s_m = Hill_m.s*minus_nm;
 
 Pn = zeros(x0(1)*10,1);
 Pm = zeros(x0(1)*10,1);
@@ -120,12 +130,12 @@ while curT < tspan(2)
 
     % Calculate reaction propensities   
     a = [
-        Hill_n.a + Hill_n.s/(1+(Hill_n.K/prevX(1))^Hill_n.H)
-        prevX(1)
+        a_n + s_n/(1+(Hill_n.K/prevX(1))^Hill_n.H)
+        prevX(1)*minus_mn
         gamma_nm*prevX(1)
         gamma_mn*prevX(2)
-        Hill_m.a + Hill_m.s/(1+(Hill_m.K/prevX(2))^Hill_m.H)
-        prevX(2)
+        a_m + s_m/(1+(Hill_m.K/prevX(2))^Hill_m.H)
+        prevX(2)*minus_nm
         ];
     
     % Sample earliest time-to-fire (tau)

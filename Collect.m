@@ -1,24 +1,10 @@
 % Collects Gillespie output in folder and makes table with params and corr time
-% all_collect = {'scan_hx_hy_theta0_nc3000-hill'};
-all_collect = {'scan_thetax_thetay_h0_nc3000-hill'};
-% all_collect = {'scan_thetax_thetay_h0_nc3000-schlogl'};
-% all_collect = {'scan_hx_hy_theta0_nc3000'};
 % all_collect = {'symmetric_h_theta_nc3000'};
-% all_collect = {'randparams0_1-nc_3000-schlogl-long'};
-% all_collect = {'randparams0_1-schlogl'};
-
-% all_collect = {'scan_hx_hy_theta_offset-schlogl'};
-% all_collect = {'scan_hx_hy_theta_offset-hill'};
-
-% all_collect = {'scan_hx_hy-schlogl'};
-%all_collect = {'scan_hx_hy-hill'};
-
-% all_collect = {'scan-theta-h-schlogl'};
-% all_collect = {'scan-theta-h-hill'};
-
-% all_collect = {'producer-consumer-hill'};
-% all_collect = {'producer-consumer'};
-
+% all_collect = {'scan_thetax_thetay_h0_nc3000-hill'};
+% all_collect = {'scan_thetax_thetay_h0_nc3000-schlogl'};
+% all_collect = {'scan_hx_hy_theta0_nc3000-hill'};
+% all_collect = {'scan_hx_hy_theta0_nc3000'};
+all_collect = {'randparams0_1-nc_3000-schlogl'};
 
 for aa=1:length(all_collect)
     disp(['Doing ' all_collect{aa} ]);

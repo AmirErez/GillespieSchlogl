@@ -58,10 +58,12 @@ fprintf('n: = a=%.2f, g=%.2f, K=%.2f, K2=%.2f, N=%f, s=%.2f\n',Schlogl_n.a, Schl
 fprintf('m: = a=%.2f, g=%.2f, K=%.2f, K2=%.2f, N=%f, s=%.2f\n',Schlogl_m.a, Schlogl_m.g, Schlogl_m.K, Schlogl_m.K2, Schlogl_m.N, Schlogl_m.s);
 fprintf('-------------------------------------------------------------------\n');
 
-
+nc_n = Schlogl_n.s/3+1
+nc_m = Schlogl_m.s/3+1
 
 k_n1minus = 1;
-k_m1minus = 1;
+k_m1minus = k_n1minus/(Schlogl_n.K^2)*(Schlogl_m.K^2);
+
 k_n1plus = Schlogl_n.a*k_n1minus;
 k_m1plus = Schlogl_m.a*k_m1minus;
 k_n2minus = k_n1minus/(Schlogl_n.K^2);
